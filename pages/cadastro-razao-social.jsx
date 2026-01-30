@@ -17,7 +17,8 @@ export default function CadastroRazaoSocial() {
     const nome = localStorage.getItem('cadastroNome');
     const sobrenome = localStorage.getItem('cadastroSobrenome');
     const tipoPessoa = localStorage.getItem('cadastroTipoPessoa');
-    if (!nome || !sobrenome || !tipoPessoa || tipoPessoa !== 'pj') {
+    const cnpj = localStorage.getItem('cadastroCNPJ');
+    if (!nome || !sobrenome || !tipoPessoa || tipoPessoa !== 'pj' || !cnpj) {
       router.push('/cadastro-tipo-pessoa');
     }
   }, [router]);
@@ -33,7 +34,7 @@ export default function CadastroRazaoSocial() {
   };
 
   const handleBack = () => {
-    router.push('/cadastro-tipo-pessoa');
+    router.push('/cadastro-cnpj');
   };
 
   return (
@@ -57,7 +58,7 @@ export default function CadastroRazaoSocial() {
         }
         
         .gradient-text {
-          background: linear-gradient(135deg, #0ea5e9 0%, #10b981 100%);
+          background: linear-gradient(135deg, #1e3a8a 0%, #10b981 50%, #000000 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
@@ -124,30 +125,30 @@ export default function CadastroRazaoSocial() {
       `}</style>
 
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 transition-all duration-300" 
-           style={{
-             backgroundColor: scrollY > 50 ? 'rgba(2, 6, 23, 0.95)' : 'transparent',
-             backdropFilter: scrollY > 50 ? 'blur(10px)' : 'none',
-             borderBottom: scrollY > 50 ? '1px solid rgba(14, 165, 233, 0.2)' : 'none'
-           }}>
+      <nav className="fixed top-0 w-full z-50 transition-all duration-300"
+        style={{
+          backgroundColor: scrollY > 50 ? 'rgba(2, 6, 23, 0.95)' : 'transparent',
+          backdropFilter: scrollY > 50 ? 'blur(10px)' : 'none',
+          borderBottom: scrollY > 50 ? '1px solid rgba(14, 165, 233, 0.2)' : 'none'
+        }}>
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
-            <button 
+            <button
               onClick={handleBack}
               className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors"
             >
               <ArrowLeft size={24} />
               <span>Voltar</span>
             </button>
-            
+
             <div className="flex items-center space-x-2">
               <div className="flex items-center">
-                <span className="text-2xl font-normal text-white" style={{fontFamily: 'Poiret One, cursive', letterSpacing: '1.5px'}}>Fides</span>
-                <span className="text-2xl font-normal text-cyan-500" style={{fontFamily: 'Monoton, cursive', letterSpacing: '0.8px'}}>Food</span>
-                <span className="text-2xl font-normal text-white" style={{fontFamily: 'Poiret One, cursive', letterSpacing: '1.5px'}}>Fi</span>
+                <span className="text-3xl font-normal text-white" style={{ fontFamily: 'Poiret One, cursive', letterSpacing: '2px' }}>Fides</span>
+                <span className="text-3xl font-normal gradient-text" style={{ fontFamily: 'Monoton, cursive', letterSpacing: '1px' }}>Food</span>
+                <span className="text-3xl font-normal text-white" style={{ fontFamily: 'Poiret One, cursive', letterSpacing: '2px' }}>Fi</span>
               </div>
             </div>
-            
+
             <div className="w-20"></div>
           </div>
         </div>
@@ -167,7 +168,7 @@ export default function CadastroRazaoSocial() {
 
       {/* Main Content */}
       <section className="relative min-h-screen flex items-center justify-center bg-grid hero-gradient overflow-hidden pt-32">
-        <div 
+        <div
           className="absolute inset-0 opacity-30"
           style={{ transform: `translateY(${parallaxOffset}px)` }}
         >
@@ -229,13 +230,13 @@ export default function CadastroRazaoSocial() {
                   <div>
                     <h4 className="text-white font-semibold mb-1">O que é Razão Social?</h4>
                     <p className="text-gray-300 text-sm leading-relaxed mb-2">
-                      Razão Social é o nome oficial da empresa registrado na Junta Comercial. 
+                      Razão Social é o nome oficial da empresa registrado na Junta Comercial.
                       É diferente do nome fantasia e deve ser exatamente como está no documento.
                     </p>
                     <div className="bg-slate-800/50 rounded-lg p-3 mt-3">
                       <p className="text-cyan-400 font-semibold text-sm mb-1">Exemplo:</p>
                       <p className="text-gray-300 text-sm">
-                        <span className="text-white">Razão Social:</span> FidesFoodFi Tecnologia Ltda.<br/>
+                        <span className="text-white">Razão Social:</span> FidesFoodFi Tecnologia Ltda.<br />
                         <span className="text-white">Nome Fantasia:</span> FidesFoodFi
                       </p>
                     </div>

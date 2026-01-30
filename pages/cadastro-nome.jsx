@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronRight, ArrowLeft, User, Zap } from 'lucide-react';
+import { ChevronRight, ArrowLeft, Zap } from 'lucide-react';
 import { useRouter } from 'next/router';
 
 export default function CadastroNome() {
   const [scrollY, setScrollY] = useState(0);
-  const [nome, setNome] = useState('');
-  const [sobrenome, setSobrenome] = useState('');
+  const [apelido, setApelido] = useState('');
   const router = useRouter();
 
   useEffect(() => {
@@ -18,9 +17,8 @@ export default function CadastroNome() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (nome.trim() && sobrenome.trim()) {
-      localStorage.setItem('cadastroNome', nome);
-      localStorage.setItem('cadastroSobrenome', sobrenome);
+    if (apelido.trim()) {
+      localStorage.setItem('cadastroApelido', apelido);
       router.push('/cadastro-tipo-pessoa');
     }
   };
@@ -50,7 +48,7 @@ export default function CadastroNome() {
         }
         
         .gradient-text {
-          background: linear-gradient(135deg, #0ea5e9 0%, #10b981 100%);
+          background: linear-gradient(135deg, #1e3a8a 0%, #10b981 50%, #000000 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
@@ -117,30 +115,30 @@ export default function CadastroNome() {
       `}</style>
 
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 transition-all duration-300" 
-           style={{
-             backgroundColor: scrollY > 50 ? 'rgba(2, 6, 23, 0.95)' : 'transparent',
-             backdropFilter: scrollY > 50 ? 'blur(10px)' : 'none',
-             borderBottom: scrollY > 50 ? '1px solid rgba(14, 165, 233, 0.2)' : 'none'
-           }}>
+      <nav className="fixed top-0 w-full z-50 transition-all duration-300"
+        style={{
+          backgroundColor: scrollY > 50 ? 'rgba(2, 6, 23, 0.95)' : 'transparent',
+          backdropFilter: scrollY > 50 ? 'blur(10px)' : 'none',
+          borderBottom: scrollY > 50 ? '1px solid rgba(14, 165, 233, 0.2)' : 'none'
+        }}>
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
-            <button 
+            <button
               onClick={handleBack}
               className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors"
             >
               <ArrowLeft size={24} />
               <span>Voltar</span>
             </button>
-            
+
             <div className="flex items-center space-x-2">
               <div className="flex items-center">
-                <span className="text-2xl font-normal text-white" style={{fontFamily: 'Poiret One, cursive', letterSpacing: '1.5px'}}>Fides</span>
-                <span className="text-2xl font-normal text-cyan-500" style={{fontFamily: 'Monoton, cursive', letterSpacing: '0.8px'}}>Food</span>
-                <span className="text-2xl font-normal text-white" style={{fontFamily: 'Poiret One, cursive', letterSpacing: '1.5px'}}>Fi</span>
+                <span className="text-3xl font-normal text-white" style={{ fontFamily: 'Poiret One, cursive', letterSpacing: '2px' }}>Fides</span>
+                <span className="text-3xl font-normal gradient-text" style={{ fontFamily: 'Monoton, cursive', letterSpacing: '1px' }}>Food</span>
+                <span className="text-3xl font-normal text-white" style={{ fontFamily: 'Poiret One, cursive', letterSpacing: '2px' }}>Fi</span>
               </div>
             </div>
-            
+
             <div className="w-20"></div>
           </div>
         </div>
@@ -160,7 +158,7 @@ export default function CadastroNome() {
 
       {/* Main Content */}
       <section className="relative min-h-screen flex items-center justify-center bg-grid hero-gradient overflow-hidden pt-32">
-        <div 
+        <div
           className="absolute inset-0 opacity-30"
           style={{ transform: `translateY(${parallaxOffset}px)` }}
         >
@@ -171,45 +169,27 @@ export default function CadastroNome() {
         <div className="relative max-w-2xl mx-auto px-6 py-20 w-full">
           <div className="animate-fade-in-up">
             <div className="text-center mb-12">
-              <div className="w-24 h-24 bg-gradient-to-br from-cyan-500 to-emerald-500 rounded-3xl flex items-center justify-center mb-6 glow-effect mx-auto animate-float">
-                <User className="w-12 h-12 text-white" />
-              </div>
               <h1 className="text-4xl md:text-5xl font-orbitron font-black mb-4">
-                <span className="gradient-text">QUAL O SEU NOME?</span>
+                <span className="bg-gradient-to-r from-emerald-500 via-green-400 to-emerald-500 bg-clip-text text-transparent">COMO PODEMOS TE CHAMAR?</span>
               </h1>
               <p className="text-xl text-gray-300 font-light">
-                Vamos começar com o básico. Como podemos chamar você?
+                Escolha um apelido para sua conta
               </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-4">
                 <div>
-                  <label htmlFor="nome" className="block text-lg font-medium text-gray-300 mb-2">
-                    Nome
+                  <label htmlFor="apelido" className="block text-lg font-medium text-gray-300 mb-2">
+                    Apelido
                   </label>
                   <input
                     type="text"
-                    id="nome"
-                    value={nome}
-                    onChange={(e) => setNome(e.target.value)}
+                    id="apelido"
+                    value={apelido}
+                    onChange={(e) => setApelido(e.target.value)}
                     className="w-full px-6 py-4 bg-slate-800/50 backdrop-blur-sm border border-cyan-500/20 rounded-2xl text-white text-lg input-focus outline-none"
-                    placeholder="Digite seu primeiro nome"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="sobrenome" className="block text-lg font-medium text-gray-300 mb-2">
-                    Sobrenome
-                  </label>
-                  <input
-                    type="text"
-                    id="sobrenome"
-                    value={sobrenome}
-                    onChange={(e) => setSobrenome(e.target.value)}
-                    className="w-full px-6 py-4 bg-slate-800/50 backdrop-blur-sm border border-cyan-500/20 rounded-2xl text-white text-lg input-focus outline-none"
-                    placeholder="Digite seu sobrenome"
+                    placeholder="Digite seu apelido"
                     required
                   />
                 </div>
@@ -218,7 +198,7 @@ export default function CadastroNome() {
               <div className="pt-6">
                 <button
                   type="submit"
-                  disabled={!nome.trim() || !sobrenome.trim()}
+                  disabled={!apelido.trim()}
                   className="w-full px-8 py-4 bg-gradient-to-r from-cyan-500 to-emerald-500 rounded-2xl text-xl font-bold hover:shadow-2xl hover:shadow-emerald-500/50 transition-all transform hover:scale-[1.02] glow-effect disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3"
                 >
                   <span>Continuar</span>

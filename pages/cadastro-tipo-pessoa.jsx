@@ -5,7 +5,9 @@ import { useRouter } from 'next/router';
 export default function CadastroTipoPessoa() {
   const [scrollY, setScrollY] = useState(0);
   const [tipoPessoa, setTipoPessoa] = useState('');
+  const [apelido, setApelido] = useState('');
   const router = useRouter();
+
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -14,10 +16,11 @@ export default function CadastroTipoPessoa() {
   }, []);
 
   useEffect(() => {
-    const nome = localStorage.getItem('cadastroNome');
-    const sobrenome = localStorage.getItem('cadastroSobrenome');
-    if (!nome || !sobrenome) {
+    const apelidoSalvo = localStorage.getItem('cadastroApelido');
+    if (!apelidoSalvo) {
       router.push('/cadastro-nome');
+    } else {
+      setApelido(apelidoSalvo);
     }
   }, [router]);
 
@@ -30,7 +33,7 @@ export default function CadastroTipoPessoa() {
       if (tipoPessoa === 'pf') {
         router.push('/cadastro-rg');
       } else {
-        router.push('/cadastro-razao-social');
+        router.push('/cadastro-cnpj');
       }
     }
   };
@@ -60,7 +63,7 @@ export default function CadastroTipoPessoa() {
         }
         
         .gradient-text {
-          background: linear-gradient(135deg, #0ea5e9 0%, #10b981 100%);
+          background: linear-gradient(135deg, #1e3a8a 0%, #10b981 50%, #000000 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
@@ -142,30 +145,30 @@ export default function CadastroTipoPessoa() {
       `}</style>
 
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 transition-all duration-300" 
-           style={{
-             backgroundColor: scrollY > 50 ? 'rgba(2, 6, 23, 0.95)' : 'transparent',
-             backdropFilter: scrollY > 50 ? 'blur(10px)' : 'none',
-             borderBottom: scrollY > 50 ? '1px solid rgba(14, 165, 233, 0.2)' : 'none'
-           }}>
+      <nav className="fixed top-0 w-full z-50 transition-all duration-300"
+        style={{
+          backgroundColor: scrollY > 50 ? 'rgba(2, 6, 23, 0.95)' : 'transparent',
+          backdropFilter: scrollY > 50 ? 'blur(10px)' : 'none',
+          borderBottom: scrollY > 50 ? '1px solid rgba(14, 165, 233, 0.2)' : 'none'
+        }}>
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
-            <button 
+            <button
               onClick={handleBack}
               className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors"
             >
               <ArrowLeft size={24} />
               <span>Voltar</span>
             </button>
-            
+
             <div className="flex items-center space-x-2">
               <div className="flex items-center">
-                <span className="text-2xl font-normal text-white" style={{fontFamily: 'Poiret One, cursive', letterSpacing: '1.5px'}}>Fides</span>
-                <span className="text-2xl font-normal text-cyan-500" style={{fontFamily: 'Monoton, cursive', letterSpacing: '0.8px'}}>Food</span>
-                <span className="text-2xl font-normal text-white" style={{fontFamily: 'Poiret One, cursive', letterSpacing: '1.5px'}}>Fi</span>
+                <span className="text-3xl font-normal text-white" style={{ fontFamily: 'Poiret One, cursive', letterSpacing: '2px' }}>Fides</span>
+                <span className="text-3xl font-normal gradient-text" style={{ fontFamily: 'Monoton, cursive', letterSpacing: '1px' }}>Food</span>
+                <span className="text-3xl font-normal text-white" style={{ fontFamily: 'Poiret One, cursive', letterSpacing: '2px' }}>Fi</span>
               </div>
             </div>
-            
+
             <div className="w-20"></div>
           </div>
         </div>
@@ -185,7 +188,7 @@ export default function CadastroTipoPessoa() {
 
       {/* Main Content */}
       <section className="relative min-h-screen flex items-center justify-center bg-grid hero-gradient overflow-hidden pt-32">
-        <div 
+        <div
           className="absolute inset-0 opacity-30"
           style={{ transform: `translateY(${parallaxOffset}px)` }}
         >
@@ -197,30 +200,21 @@ export default function CadastroTipoPessoa() {
           <div className="animate-fade-in-up">
             <div className="text-center mb-12">
               <h1 className="text-4xl md:text-5xl font-orbitron font-black mb-4">
-                <span className="gradient-text">VOCÊ É PESSOA FÍSICA OU JURÍDICA?</span>
+                <span className="bg-gradient-to-r from-blue-500 via-emerald-400 to-blue-500 bg-clip-text text-transparent">Olá, {apelido}</span>
               </h1>
-              <p className="text-xl text-gray-300 font-light">
-                Escolha o tipo de conta que melhor se adapta às suas necessidades
-              </p>
             </div>
+
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-8">
                 <button
                   type="button"
                   onClick={() => setTipoPessoa('pf')}
-                  className={`option-card bg-slate-800/30 backdrop-blur-sm border-2 rounded-3xl p-8 text-left card-hover ${
-                    tipoPessoa === 'pf' ? 'selected' : 'border-cyan-500/20'
-                  }`}
+                  className={`option-card bg-slate-800/30 backdrop-blur-sm border-2 rounded-3xl p-8 text-left card-hover ${tipoPessoa === 'pf' ? 'selected' : 'border-cyan-500/20'
+                    }`}
                 >
                   <div className="flex items-start gap-4">
-                    <div className={`w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0 ${
-                      tipoPessoa === 'pf' 
-                        ? 'bg-gradient-to-br from-emerald-500 to-green-500 glow-effect' 
-                        : 'bg-gradient-to-br from-cyan-500 to-blue-500'
-                    }`}>
-                      <User className="w-8 h-8 text-white" />
-                    </div>
+
                     <div className="flex-1">
                       <h3 className="text-2xl font-orbitron font-bold mb-2 text-white">Pessoa Física</h3>
                       <p className="text-gray-400 text-lg leading-relaxed mb-4">
@@ -247,34 +241,27 @@ export default function CadastroTipoPessoa() {
                 <button
                   type="button"
                   onClick={() => setTipoPessoa('pj')}
-                  className={`option-card bg-slate-800/30 backdrop-blur-sm border-2 rounded-3xl p-8 text-left card-hover ${
-                    tipoPessoa === 'pj' ? 'selected' : 'border-cyan-500/20'
-                  }`}
+                  className={`option-card bg-slate-800/30 backdrop-blur-sm border-2 rounded-3xl p-8 text-left card-hover ${tipoPessoa === 'pj' ? 'selected' : 'border-cyan-500/20'
+                    }`}
                 >
                   <div className="flex items-start gap-4">
-                    <div className={`w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0 ${
-                      tipoPessoa === 'pj' 
-                        ? 'bg-gradient-to-br from-emerald-500 to-green-500 glow-effect' 
-                        : 'bg-gradient-to-br from-cyan-500 to-blue-500'
-                    }`}>
-                      <Building className="w-8 h-8 text-white" />
-                    </div>
+
                     <div className="flex-1">
                       <h3 className="text-2xl font-orbitron font-bold mb-2 text-white">Pessoa Jurídica</h3>
                       <p className="text-gray-400 text-lg leading-relaxed mb-4">
                         Para empresas e comércios que querem aceitar o método de pagamento
                       </p>
                       <div className="space-y-2">
-                        <div className="flex items-center gap-2 text-cyan-400">
-                          <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
+                        <div className="flex items-center gap-2 text-emerald-400">
+                          <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
                           <span className="text-sm">Cadastro com CNPJ</span>
                         </div>
-                        <div className="flex items-center gap-2 text-cyan-400">
-                          <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
+                        <div className="flex items-center gap-2 text-emerald-400">
+                          <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
                           <span className="text-sm">Limite baseado em faturamento</span>
                         </div>
-                        <div className="flex items-center gap-2 text-cyan-400">
-                          <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
+                        <div className="flex items-center gap-2 text-emerald-400">
+                          <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
                           <span className="text-sm">Taxas especiais para negócios</span>
                         </div>
                       </div>

@@ -7,6 +7,8 @@ export default function CadastroRG() {
   const [rg, setRg] = useState('');
   const [orgaoExpedidor, setOrgaoExpedidor] = useState('');
   const [dataExpedicao, setDataExpedicao] = useState('');
+  const [dataFormatada, setDataFormatada] = useState('');
+  const [apelido, setApelido] = useState('');
   const router = useRouter();
 
   useEffect(() => {
@@ -16,11 +18,12 @@ export default function CadastroRG() {
   }, []);
 
   useEffect(() => {
-    const nome = localStorage.getItem('cadastroNome');
-    const sobrenome = localStorage.getItem('cadastroSobrenome');
+    const apelidoSalvo = localStorage.getItem('cadastroApelido');
     const tipoPessoa = localStorage.getItem('cadastroTipoPessoa');
-    if (!nome || !sobrenome || !tipoPessoa || tipoPessoa !== 'pf') {
+    if (!apelidoSalvo || !tipoPessoa || tipoPessoa !== 'pf') {
       router.push('/cadastro-tipo-pessoa');
+    } else {
+      setApelido(apelidoSalvo);
     }
   }, [router]);
 
@@ -44,6 +47,31 @@ export default function CadastroRG() {
     return value.replace(/\D/g, '').replace(/(\d{2})(\d{3})(\d{3})(\d{1})/, '$1.$2.$3-$4');
   };
 
+  const formatDate = (value) => {
+    const numbers = value.replace(/\D/g, '');
+    if (numbers.length <= 2) {
+      return numbers;
+    } else if (numbers.length <= 4) {
+      return `${numbers.slice(0, 2)}/${numbers.slice(2)}`;
+    } else {
+      return `${numbers.slice(0, 2)}/${numbers.slice(2, 4)}/${numbers.slice(4, 8)}`;
+    }
+  };
+
+  const handleDateChange = (value) => {
+    const formatted = formatDate(value);
+    setDataFormatada(formatted);
+
+    // Convert DD/MM/YYYY to YYYY-MM-DD for storage
+    const numbers = value.replace(/\D/g, '');
+    if (numbers.length === 8) {
+      const day = numbers.slice(0, 2);
+      const month = numbers.slice(2, 4);
+      const year = numbers.slice(4, 8);
+      setDataExpedicao(`${year}-${month}-${day}`);
+    }
+  };
+
   return (
     <div className="bg-slate-950 text-white font-sans overflow-x-hidden min-h-screen">
       <style jsx global>{`
@@ -65,7 +93,7 @@ export default function CadastroRG() {
         }
         
         .gradient-text {
-          background: linear-gradient(135deg, #0ea5e9 0%, #10b981 100%);
+          background: linear-gradient(135deg, #1e3a8a 0%, #10b981 50%, #000000 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
@@ -132,40 +160,40 @@ export default function CadastroRG() {
       `}</style>
 
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 transition-all duration-300" 
-           style={{
-             backgroundColor: scrollY > 50 ? 'rgba(2, 6, 23, 0.95)' : 'transparent',
-             backdropFilter: scrollY > 50 ? 'blur(10px)' : 'none',
-             borderBottom: scrollY > 50 ? '1px solid rgba(14, 165, 233, 0.2)' : 'none'
-           }}>
+      <nav className="fixed top-0 w-full z-50 transition-all duration-300"
+        style={{
+          backgroundColor: scrollY > 50 ? 'rgba(2, 6, 23, 0.95)' : 'transparent',
+          backdropFilter: scrollY > 50 ? 'blur(10px)' : 'none',
+          borderBottom: scrollY > 50 ? '1px solid rgba(14, 165, 233, 0.2)' : 'none'
+        }}>
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
-            <button 
+            <button
               onClick={handleBack}
               className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors"
             >
               <ArrowLeft size={24} />
               <span>Voltar</span>
             </button>
-            
+
             <div className="flex items-center space-x-2">
               <div className="flex items-center">
-                <span className="text-2xl font-normal text-white" style={{fontFamily: 'Poiret One, cursive', letterSpacing: '1.5px'}}>Fides</span>
-                <span className="text-2xl font-normal text-cyan-500" style={{fontFamily: 'Monoton, cursive', letterSpacing: '0.8px'}}>Food</span>
-                <span className="text-2xl font-normal text-white" style={{fontFamily: 'Poiret One, cursive', letterSpacing: '1.5px'}}>Fi</span>
+                <span className="text-3xl font-normal text-white" style={{ fontFamily: 'Poiret One, cursive', letterSpacing: '2px' }}>Fides</span>
+                <span className="text-3xl font-normal gradient-text" style={{ fontFamily: 'Monoton, cursive', letterSpacing: '1px' }}>Food</span>
+                <span className="text-3xl font-normal text-white" style={{ fontFamily: 'Poiret One, cursive', letterSpacing: '2px' }}>Fi</span>
               </div>
             </div>
-            
+
             <div className="w-20"></div>
           </div>
         </div>
       </nav>
 
       {/* Progress Bar */}
-      <div className="fixed left-6 top-1/2 transform -translate-y-1/2 z-40">
-        <div className="flex flex-col items-center gap-4">
-          <div className="bg-slate-800/50 backdrop-blur-sm border border-cyan-500/20 rounded-full w-2 h-48 relative">
-            <div className="bg-gradient-to-b from-cyan-500 to-emerald-500 w-2 rounded-full absolute top-0 left-0" style={{ height: '50%' }}></div>
+      <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-40">
+        <div className="flex items-center gap-4">
+          <div className="bg-slate-800/50 backdrop-blur-sm border border-cyan-500/20 rounded-full h-2 w-48 relative">
+            <div className="bg-gradient-to-r from-cyan-500 to-emerald-500 h-2 rounded-full absolute top-0 left-0" style={{ width: '50%' }}></div>
           </div>
           <div className="text-center">
             <div className="text-xs text-gray-400 font-medium">Passo 3 de 6</div>
@@ -173,49 +201,49 @@ export default function CadastroRG() {
         </div>
       </div>
 
-      {/* Main Content */}
-      <section className="relative min-h-screen flex items-center justify-center bg-grid hero-gradient overflow-hidden pt-32">
-        <div 
-          className="absolute inset-0 opacity-30"
-          style={{ transform: `translateY(${parallaxOffset}px)` }}
-        >
-          <div className="absolute top-20 left-10 w-72 h-72 bg-cyan-500/20 rounded-full blur-3xl animate-pulse-glow"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: '1s' }}></div>
+      {/* Split Layout Section */}
+      <div className="min-h-screen flex flex-col lg:flex-row pt-20">
+        {/* Left Side - Text with Gradient */}
+        <div className="lg:w-1/2 relative flex items-center justify-center bg-grid hero-gradient p-12">
+          <div
+            className="absolute inset-0 opacity-30"
+            style={{ transform: `translateY(${parallaxOffset}px)` }}
+          >
+            <div className="absolute top-20 left-10 w-72 h-72 bg-cyan-500/20 rounded-full blur-3xl animate-pulse-glow"></div>
+            <div className="absolute bottom-20 right-10 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: '1s' }}></div>
+          </div>
+
+          <div className="relative z-10 max-w-xl">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-orbitron font-black leading-tight">
+              <span className="bg-gradient-to-r from-blue-500 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">
+                {apelido}, precisamos dos dados do seu documento de identificação
+              </span>
+            </h1>
+          </div>
         </div>
 
-        <div className="relative max-w-2xl mx-auto px-6 py-20 w-full">
-          <div className="animate-fade-in-up">
-            <div className="text-center mb-12">
-              <div className="w-24 h-24 bg-gradient-to-br from-cyan-500 to-emerald-500 rounded-3xl flex items-center justify-center mb-6 glow-effect mx-auto animate-float">
-                <CreditCard className="w-12 h-12 text-white" />
-              </div>
-              <h1 className="text-4xl md:text-5xl font-orbitron font-black mb-4">
-                <span className="gradient-text">DADOS DO RG</span>
-              </h1>
-              <p className="text-xl text-gray-300 font-light">
-                Precisamos dos dados do seu documento de identificação
-              </p>
-            </div>
+        {/* Right Side - Form */}
+        <section className="lg:w-1/2 relative min-h-screen flex items-center justify-center bg-slate-950 overflow-hidden">
+          <div className="relative max-w-xl mx-auto px-6 py-20 w-full">
+            <div className="animate-fade-in-up">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="space-y-4">
+                  <div>
+                    <label htmlFor="rg" className="block text-lg font-medium text-gray-300 mb-2">
+                      Número do RG
+                    </label>
+                    <input
+                      type="text"
+                      id="rg"
+                      value={rg}
+                      onChange={(e) => setRg(formatRG(e.target.value))}
+                      className="w-full px-6 py-4 bg-slate-800/50 backdrop-blur-sm border border-cyan-500/20 rounded-2xl text-white text-lg input-focus outline-none"
+                      placeholder="XX.XXX.XXX-X"
+                      maxLength={12}
+                      required
+                    />
+                  </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="rg" className="block text-lg font-medium text-gray-300 mb-2">
-                    Número do RG
-                  </label>
-                  <input
-                    type="text"
-                    id="rg"
-                    value={rg}
-                    onChange={(e) => setRg(formatRG(e.target.value))}
-                    className="w-full px-6 py-4 bg-slate-800/50 backdrop-blur-sm border border-cyan-500/20 rounded-2xl text-white text-lg input-focus outline-none"
-                    placeholder="XX.XXX.XXX-X"
-                    maxLength={12}
-                    required
-                  />
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="orgaoExpedidor" className="block text-lg font-medium text-gray-300 mb-2">
                       Órgão Expedidor
@@ -246,53 +274,39 @@ export default function CadastroRG() {
                       Data de Expedição
                     </label>
                     <input
-                      type="date"
+                      type="text"
                       id="dataExpedicao"
-                      value={dataExpedicao}
-                      onChange={(e) => setDataExpedicao(e.target.value)}
+                      value={dataFormatada}
+                      onChange={(e) => handleDateChange(e.target.value)}
                       className="w-full px-6 py-4 bg-slate-800/50 backdrop-blur-sm border border-cyan-500/20 rounded-2xl text-white text-lg input-focus outline-none"
-                      max={new Date().toISOString().split('T')[0]}
+                      placeholder="DD/MM/AAAA"
+                      maxLength={10}
                       required
                     />
                   </div>
                 </div>
-              </div>
 
-              <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-xl p-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-cyan-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-white text-xs font-bold">i</span>
-                  </div>
-                  <div>
-                    <h4 className="text-white font-semibold mb-1">Por que precisamos desses dados?</h4>
-                    <p className="text-gray-300 text-sm leading-relaxed">
-                      Seus dados do RG são usados apenas para verificação de identidade e garantia da segurança das transações. 
-                      Todas as informações são criptografadas e protegidas.
-                    </p>
-                  </div>
+                <div className="pt-6">
+                  <button
+                    type="submit"
+                    disabled={!rg.trim() || !orgaoExpedidor.trim() || !dataExpedicao}
+                    className="w-full px-8 py-4 bg-gradient-to-r from-cyan-500 to-emerald-500 rounded-2xl text-xl font-bold hover:shadow-2xl hover:shadow-emerald-500/50 transition-all transform hover:scale-[1.02] glow-effect disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3"
+                  >
+                    <span>Continuar</span>
+                    <ChevronRight size={24} />
+                  </button>
                 </div>
-              </div>
+              </form>
 
-              <div className="pt-6">
-                <button
-                  type="submit"
-                  disabled={!rg.trim() || !orgaoExpedidor.trim() || !dataExpedicao}
-                  className="w-full px-8 py-4 bg-gradient-to-r from-cyan-500 to-emerald-500 rounded-2xl text-xl font-bold hover:shadow-2xl hover:shadow-emerald-500/50 transition-all transform hover:scale-[1.02] glow-effect disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3"
-                >
-                  <span>Continuar</span>
-                  <ChevronRight size={24} />
-                </button>
+              <div className="mt-12 text-center">
+                <p className="text-gray-400 text-sm">
+                  Suas informações estão seguras e criptografadas
+                </p>
               </div>
-            </form>
-
-            <div className="mt-12 text-center">
-              <p className="text-gray-400 text-sm">
-                Suas informações estão seguras e serão usadas apenas para criar sua conta
-              </p>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
   );
 }

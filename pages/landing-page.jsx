@@ -137,16 +137,16 @@ export default function LandingPage() {
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-2">
               <div className="flex items-center animate-slide-in-left-light">
-                <span className="text-3xl font-normal text-white" style={{fontFamily: 'Poiret One, cursive', letterSpacing: '2px'}}>Fides</span>
-                <span className="text-3xl font-normal text-cyan-500" style={{fontFamily: 'Monoton, cursive', letterSpacing: '1px'}}>Food</span>
-                <span className="text-3xl font-normal text-white" style={{fontFamily: 'Poiret One, cursive', letterSpacing: '2px'}}>Fi</span>
+                <span className="text-3xl font-normal text-white" style={{ fontFamily: 'Poiret One, cursive', letterSpacing: '2px' }}>Fides</span>
+                <span className="text-3xl font-normal gradient-text" style={{ fontFamily: 'Monoton, cursive', letterSpacing: '1px' }}>Food</span>
+                <span className="text-3xl font-normal text-white" style={{ fontFamily: 'Poiret One, cursive', letterSpacing: '2px' }}>Fi</span>
               </div>
             </div>
-            
+
             <div className="hidden md:flex items-center space-x-8">
               <a href="#como-funciona" className="text-gray-400 hover:text-emerald-400 transition-colors font-medium">Como Funciona</a>
               <a href="#beneficios" className="text-gray-400 hover:text-emerald-400 transition-colors font-medium">Benefícios</a>
-              <button 
+              <button
                 onClick={() => window.location.href = '/cadastro-inicial'}
                 className="px-6 py-2 bg-gradient-to-r from-cyan-500 to-emerald-500 rounded-lg font-semibold hover:shadow-lg hover:shadow-emerald-500/50 transition-all"
               >
@@ -154,7 +154,7 @@ export default function LandingPage() {
               </button>
             </div>
 
-            <button 
+            <button
               className="md:hidden text-white"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
@@ -169,7 +169,7 @@ export default function LandingPage() {
             <div className="px-6 py-4 space-y-4">
               <a href="#como-funciona" className="block text-gray-400 hover:text-emerald-400 transition-colors font-medium">Como Funciona</a>
               <a href="#beneficios" className="block text-gray-400 hover:text-emerald-400 transition-colors font-medium">Benefícios</a>
-              <button 
+              <button
                 onClick={() => window.location.href = '/cadastro-inicial'}
                 className="w-full px-6 py-2 bg-gradient-to-r from-cyan-500 to-emerald-500 rounded-lg font-semibold"
               >
@@ -182,7 +182,7 @@ export default function LandingPage() {
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center bg-white overflow-hidden">
-        <div 
+        <div
           className="absolute inset-0 opacity-30"
           style={{ transform: `translateY(${parallaxOffset}px)` }}
         >
@@ -201,7 +201,7 @@ export default function LandingPage() {
               Compre hoje pela metade do preço e pague o restante em até 3 meses. Aumente seu poder de compra <span className="text-blue-600 font-bold">2x</span> e impulsione seu negócio com condições exclusivas.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <button 
+              <button
                 onClick={() => window.location.href = '/cadastro-inicial'}
                 className="px-10 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg text-lg font-bold hover:shadow-2xl hover:shadow-blue-600/50 transition-all transform hover:scale-105 glow-effect"
               >
@@ -216,7 +216,7 @@ export default function LandingPage() {
               { value: '50%', label: 'Entrada Facilitada', delay: '0.4s' },
               { value: '5%', label: 'Taxa de Antecipação', delay: '0.6s' }
             ].map((stat, idx) => (
-              <div 
+              <div
                 key={idx}
                 className="bg-white/80 backdrop-blur-sm border border-blue-600/20 rounded-2xl p-8 card-hover animate-fade-in-up shadow-lg"
                 style={{ animationDelay: stat.delay }}
@@ -232,7 +232,7 @@ export default function LandingPage() {
       {/* Como Funciona Section */}
       <section id="como-funciona" className="py-32 px-6 bg-gray-100 relative overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-20"></div>
-        
+
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-20">
             <h2 className="text-5xl md:text-6xl font-orbitron font-black mb-6">
@@ -248,21 +248,19 @@ export default function LandingPage() {
             <div className="bg-white/80 backdrop-blur-sm border border-blue-600/20 rounded-full p-2 inline-flex shadow-md">
               <button
                 onClick={() => setActiveTab('cliente')}
-                className={`px-8 py-3 rounded-full font-semibold transition-all ${
-                  activeTab === 'cliente' 
-                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white' 
+                className={`px-8 py-3 rounded-full font-semibold transition-all ${activeTab === 'cliente'
+                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white'
                     : 'text-gray-600 hover:text-gray-900'
-                }`}
+                  }`}
               >
                 Para Clientes
               </button>
               <button
                 onClick={() => setActiveTab('comercio')}
-                className={`px-8 py-3 rounded-full font-semibold transition-all ${
-                  activeTab === 'comercio' 
-                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white' 
+                className={`px-8 py-3 rounded-full font-semibold transition-all ${activeTab === 'comercio'
+                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white'
                     : 'text-gray-600 hover:text-gray-900'
-                }`}
+                  }`}
               >
                 Para Comércios
               </button>
@@ -322,7 +320,7 @@ export default function LandingPage() {
                   <Users className="w-10 h-10 text-white" />
                 </div>
                 <h3 className="text-4xl font-orbitron font-bold mb-8 text-center gradient-text">Planos para Comércios</h3>
-                
+
                 <div className="grid md:grid-cols-2 gap-6 mb-8">
                   <div className="bg-gray-50 border border-blue-600/20 rounded-2xl p-6">
                     <div className="text-center mb-4">
@@ -380,7 +378,7 @@ export default function LandingPage() {
                     <div>
                       <h4 className="text-lg font-bold text-gray-900 mb-2">Condição Especial de Início</h4>
                       <p className="text-gray-700 text-lg">
-                        Comece a pagar a assinatura somente quando <strong className="text-gray-900">5 clientes</strong> optarem 
+                        Comece a pagar a assinatura somente quando <strong className="text-gray-900">5 clientes</strong> optarem
                         pelo método de pagamento. Teste gratuitamente até atingir esse marco!
                       </p>
                     </div>
@@ -445,7 +443,7 @@ export default function LandingPage() {
                 color: 'from-blue-900 to-blue-800'
               }
             ].map((benefit, idx) => (
-              <div 
+              <div
                 key={idx}
                 className="bg-white/80 backdrop-blur-sm border border-blue-600/20 rounded-3xl p-8 card-hover animate-fade-in-up shadow-lg"
                 style={{ animationDelay: `${idx * 0.1}s` }}
@@ -464,7 +462,7 @@ export default function LandingPage() {
       {/* CTA Section */}
       <section className="py-32 px-6 bg-gray-100 relative overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-20"></div>
-        
+
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-20">
             <h2 className="text-5xl md:text-7xl font-orbitron font-black mb-6 leading-tight">
@@ -473,7 +471,7 @@ export default function LandingPage() {
               <span className="text-gray-900">DECOLAR?</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Junte-se a milhares de clientes e comerciantes que já estão transformando 
+              Junte-se a milhares de clientes e comerciantes que já estão transformando
               a forma de comprar e vender com o FidesFoodFi
             </p>
           </div>
@@ -534,16 +532,16 @@ export default function LandingPage() {
             <div>
               <div className="flex items-center space-x-2 mb-4">
                 <div className="flex items-center">
-                  <span className="text-2xl font-normal text-white" style={{fontFamily: 'Poiret One, cursive', letterSpacing: '1px'}}>Fides</span>
-                  <span className="text-2xl font-normal text-cyan-500" style={{fontFamily: 'Monoton, cursive', letterSpacing: '0.5px'}}>Food</span>
-                  <span className="text-2xl font-normal text-white" style={{fontFamily: 'Poiret One, cursive', letterSpacing: '1px'}}>Fi</span>
+                  <span className="text-2xl font-normal text-white" style={{ fontFamily: 'Poiret One, cursive', letterSpacing: '1px' }}>Fides</span>
+                  <span className="text-2xl font-normal gradient-text" style={{ fontFamily: 'Monoton, cursive', letterSpacing: '0.5px' }}>Food</span>
+                  <span className="text-2xl font-normal text-white" style={{ fontFamily: 'Poiret One, cursive', letterSpacing: '1px' }}>Fi</span>
                 </div>
               </div>
               <p className="text-gray-400">
                 Revolucionando a forma de comprar e vender no Brasil
               </p>
             </div>
-            
+
             <div>
               <h4 className="font-orbitron font-bold text-white mb-4">Produto</h4>
               <ul className="space-y-2 text-gray-400">
@@ -551,7 +549,7 @@ export default function LandingPage() {
                 <li><a href="#beneficios" className="hover:text-emerald-400 transition-colors">Benefícios</a></li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="font-orbitron font-bold text-white mb-4">Empresa</h4>
               <ul className="space-y-2 text-gray-400">
@@ -560,7 +558,7 @@ export default function LandingPage() {
                 <li><a href="#" className="hover:text-emerald-400 transition-colors">Blog</a></li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="font-orbitron font-bold text-white mb-4">Suporte</h4>
               <ul className="space-y-2 text-gray-400">
@@ -570,7 +568,7 @@ export default function LandingPage() {
               </ul>
             </div>
           </div>
-          
+
           <div className="border-t border-cyan-500/20 pt-8 text-center text-gray-400">
             <p>© 2026 FidesFoodFi. Todos os direitos reservados.</p>
           </div>
