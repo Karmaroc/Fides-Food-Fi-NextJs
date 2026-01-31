@@ -42,7 +42,7 @@ export default function LandingPage() {
         }
 
         .brand-gradient {
-          background: linear-gradient(to right, #3b82f6, #f97316);
+          background: linear-gradient(to right, #3b82f6, #10b981, #f97316);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
