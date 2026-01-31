@@ -1,4 +1,4 @@
-# PayPulse - Landing Page
+# FidesFoodFi - Landing Page
 
 Landing Page moderna e responsiva construída com Next.js, inspirada no design da SpaceX com tema azul + verde contrastado.
 

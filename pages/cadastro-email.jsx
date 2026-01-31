@@ -19,12 +19,12 @@ export default function CadastroEmail() {
     const sobrenome = localStorage.getItem('cadastroSobrenome');
     const tipoPessoa = localStorage.getItem('cadastroTipoPessoa');
     const endereco = localStorage.getItem('cadastroEndereco');
-    
+
     if (!nome || !sobrenome || !tipoPessoa || !endereco) {
       router.push('/cadastro-tipo-pessoa');
       return;
     }
-    
+
     // Verificação adicional baseada no tipo de pessoa
     if (tipoPessoa === 'pf') {
       const rg = localStorage.getItem('cadastroRG');
@@ -82,7 +82,7 @@ export default function CadastroEmail() {
         }
         
         .gradient-text {
-          background: linear-gradient(135deg, #0ea5e9 0%, #10b981 100%);
+          background: linear-gradient(135deg, #1e3a8a 0%, #10b981 50%, #000000 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
@@ -149,30 +149,30 @@ export default function CadastroEmail() {
       `}</style>
 
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 transition-all duration-300" 
-           style={{
-             backgroundColor: scrollY > 50 ? 'rgba(2, 6, 23, 0.95)' : 'transparent',
-             backdropFilter: scrollY > 50 ? 'blur(10px)' : 'none',
-             borderBottom: scrollY > 50 ? '1px solid rgba(14, 165, 233, 0.2)' : 'none'
-           }}>
+      <nav className="fixed top-0 w-full z-50 transition-all duration-300"
+        style={{
+          backgroundColor: scrollY > 50 ? 'rgba(2, 6, 23, 0.95)' : 'transparent',
+          backdropFilter: scrollY > 50 ? 'blur(10px)' : 'none',
+          borderBottom: scrollY > 50 ? '1px solid rgba(14, 165, 233, 0.2)' : 'none'
+        }}>
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
-            <button 
+            <button
               onClick={handleBack}
               className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors"
             >
               <ArrowLeft size={24} />
               <span>Voltar</span>
             </button>
-            
+
             <div className="flex items-center space-x-2">
               <div className="flex items-center">
-                <span className="text-2xl font-normal text-white" style={{fontFamily: 'Poiret One, cursive', letterSpacing: '1.5px'}}>Fides</span>
-                <span className="text-2xl font-normal text-cyan-500" style={{fontFamily: 'Monoton, cursive', letterSpacing: '0.8px'}}>Food</span>
-                <span className="text-2xl font-normal text-white" style={{fontFamily: 'Poiret One, cursive', letterSpacing: '1.5px'}}>Fi</span>
+                <span className="text-3xl font-normal text-white" style={{ fontFamily: 'Poiret One, cursive', letterSpacing: '2px' }}>Fides</span>
+                <span className="text-3xl font-normal gradient-text" style={{ fontFamily: 'Monoton, cursive', letterSpacing: '1px' }}>Food</span>
+                <span className="text-3xl font-normal text-white" style={{ fontFamily: 'Poiret One, cursive', letterSpacing: '2px' }}>Fi</span>
               </div>
             </div>
-            
+
             <div className="w-20"></div>
           </div>
         </div>
@@ -192,7 +192,7 @@ export default function CadastroEmail() {
 
       {/* Main Content */}
       <section className="relative min-h-screen flex items-center justify-center bg-grid hero-gradient overflow-hidden pt-32">
-        <div 
+        <div
           className="absolute inset-0 opacity-30"
           style={{ transform: `translateY(${parallaxOffset}px)` }}
         >
@@ -203,15 +203,9 @@ export default function CadastroEmail() {
         <div className="relative max-w-2xl mx-auto px-6 py-20 w-full">
           <div className="animate-fade-in-up">
             <div className="text-center mb-12">
-              <div className="w-24 h-24 bg-gradient-to-br from-cyan-500 to-emerald-500 rounded-3xl flex items-center justify-center mb-6 glow-effect mx-auto animate-float">
-                <Mail className="w-12 h-12 text-white" />
-              </div>
               <h1 className="text-4xl md:text-5xl font-orbitron font-black mb-4">
-                <span className="gradient-text">SEU E-MAIL</span>
+                <span className="bg-gradient-to-r from-blue-600 via-cyan-400 to-blue-600 bg-clip-text text-transparent">Nos conte seu melhor e-mail</span>
               </h1>
-              <p className="text-xl text-gray-300 font-light">
-                Usaremos seu e-mail para enviar comunicações importantes sobre sua conta
-              </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -252,16 +246,15 @@ export default function CadastroEmail() {
                       <div>
                         <p className="text-gray-400 text-sm">Status da verificação</p>
                         <p className="text-lg font-semibold text-white">
-                          {email === confirmEmail && isValidEmail(email) 
-                            ? 'E-mails coincidem' 
+                          {email === confirmEmail && isValidEmail(email)
+                            ? 'E-mails coincidem'
                             : 'Os e-mails não coincidem ou são inválidos'}
                         </p>
                       </div>
-                      <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                        email === confirmEmail && isValidEmail(email) 
-                          ? 'bg-emerald-500/20 border-2 border-emerald-500' 
-                          : 'bg-red-500/20 border-2 border-red-500'
-                      }`}>
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center ${email === confirmEmail && isValidEmail(email)
+                        ? 'bg-emerald-500/20 border-2 border-emerald-500'
+                        : 'bg-red-500/20 border-2 border-red-500'
+                        }`}>
                         {email === confirmEmail && isValidEmail(email) ? (
                           <span className="text-emerald-400 text-xl">✓</span>
                         ) : (

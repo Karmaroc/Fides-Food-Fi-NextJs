@@ -25,10 +25,20 @@ export default function CadastroEndereco() {
     const nome = localStorage.getItem('cadastroNome');
     const sobrenome = localStorage.getItem('cadastroSobrenome');
     const tipoPessoa = localStorage.getItem('cadastroTipoPessoa');
-    const rg = localStorage.getItem('cadastroRG');
-    const dataNascimento = localStorage.getItem('cadastroDataNascimento');
-    if (!nome || !sobrenome || !tipoPessoa || !rg || !dataNascimento) {
+
+    if (!nome || !sobrenome || !tipoPessoa) {
       router.push('/cadastro-tipo-pessoa');
+      return;
+    }
+
+    if (tipoPessoa === 'pf') {
+      const rg = localStorage.getItem('cadastroRG');
+      const dataNascimento = localStorage.getItem('cadastroDataNascimento');
+      if (!rg || !dataNascimento) router.push('/cadastro-tipo-pessoa');
+    } else {
+      const razaoSocial = localStorage.getItem('cadastroRazaoSocial');
+      const cnpj = localStorage.getItem('cadastroCNPJ');
+      if (!razaoSocial || !cnpj) router.push('/cadastro-tipo-pessoa');
     }
   }, [router]);
 
@@ -38,7 +48,29 @@ export default function CadastroEndereco() {
     e.preventDefault();
     if (endereco.rua && endereco.numero && endereco.bairro && endereco.cidade && endereco.estado && endereco.cep) {
       localStorage.setItem('cadastroEndereco', JSON.stringify(endereco));
-      router.push('/cadastro-email');
+
+      const tipoPessoa = localStorage.getItem('cadastroTipoPessoa');
+
+      if (tipoPessoa === 'pj') {
+        const dadosCompletos = {
+          nome: localStorage.getItem('cadastroNome'),
+          sobrenome: localStorage.getItem('cadastroSobrenome'),
+          tipoPessoa: 'pj',
+          cnpj: localStorage.getItem('cadastroCNPJ'),
+          razaoSocial: localStorage.getItem('cadastroRazaoSocial'),
+          nomeEmpresa: localStorage.getItem('cadastroNomeEmpresa'),
+          cpfResponsavel: localStorage.getItem('cadastroCPFResponsavel'),
+          nomeResponsavel: localStorage.getItem('cadastroNomeResponsavel'),
+          endereco: endereco,
+          email: localStorage.getItem('cadastroEmail'),
+          telefone: localStorage.getItem('cadastroTelefone'),
+          dataCadastro: new Date().toISOString()
+        };
+        localStorage.setItem('cadastroCompleto', JSON.stringify(dadosCompletos));
+        router.push('/cadastro-sucesso-business');
+      } else {
+        router.push('/cadastro-email');
+      }
     }
   };
 
@@ -88,8 +120,8 @@ export default function CadastroEndereco() {
   }, [endereco.cep]);
 
   const estados = [
-    'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 
-    'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 
+    'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO',
+    'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI',
     'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'
   ];
 
@@ -114,7 +146,7 @@ export default function CadastroEndereco() {
         }
         
         .gradient-text {
-          background: linear-gradient(135deg, #0ea5e9 0%, #10b981 100%);
+          background: linear-gradient(135deg, #1e3a8a 0%, #10b981 50%, #000000 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
@@ -181,30 +213,30 @@ export default function CadastroEndereco() {
       `}</style>
 
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 transition-all duration-300" 
-           style={{
-             backgroundColor: scrollY > 50 ? 'rgba(2, 6, 23, 0.95)' : 'transparent',
-             backdropFilter: scrollY > 50 ? 'blur(10px)' : 'none',
-             borderBottom: scrollY > 50 ? '1px solid rgba(14, 165, 233, 0.2)' : 'none'
-           }}>
+      <nav className="fixed top-0 w-full z-50 transition-all duration-300"
+        style={{
+          backgroundColor: scrollY > 50 ? 'rgba(2, 6, 23, 0.95)' : 'transparent',
+          backdropFilter: scrollY > 50 ? 'blur(10px)' : 'none',
+          borderBottom: scrollY > 50 ? '1px solid rgba(14, 165, 233, 0.2)' : 'none'
+        }}>
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
-            <button 
+            <button
               onClick={handleBack}
               className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors"
             >
               <ArrowLeft size={24} />
               <span>Voltar</span>
             </button>
-            
+
             <div className="flex items-center space-x-2">
               <div className="flex items-center">
-                <span className="text-2xl font-normal text-white" style={{fontFamily: 'Poiret One, cursive', letterSpacing: '1.5px'}}>Fides</span>
-                <span className="text-2xl font-normal text-cyan-500" style={{fontFamily: 'Monoton, cursive', letterSpacing: '0.8px'}}>Food</span>
-                <span className="text-2xl font-normal text-white" style={{fontFamily: 'Poiret One, cursive', letterSpacing: '1.5px'}}>Fi</span>
+                <span className="text-3xl font-normal text-white" style={{ fontFamily: 'Poiret One, cursive', letterSpacing: '2px' }}>Fides</span>
+                <span className="text-3xl font-normal gradient-text" style={{ fontFamily: 'Monoton, cursive', letterSpacing: '1px' }}>Food</span>
+                <span className="text-3xl font-normal text-white" style={{ fontFamily: 'Poiret One, cursive', letterSpacing: '2px' }}>Fi</span>
               </div>
             </div>
-            
+
             <div className="w-20"></div>
           </div>
         </div>
@@ -224,7 +256,7 @@ export default function CadastroEndereco() {
 
       {/* Main Content */}
       <section className="relative min-h-screen flex items-center justify-center bg-grid hero-gradient overflow-hidden pt-32">
-        <div 
+        <div
           className="absolute inset-0 opacity-30"
           style={{ transform: `translateY(${parallaxOffset}px)` }}
         >
@@ -372,7 +404,7 @@ export default function CadastroEndereco() {
                   <div>
                     <h4 className="text-white font-semibold mb-1">Por que precisamos do seu endereço?</h4>
                     <p className="text-gray-300 text-sm leading-relaxed">
-                      Seu endereço é usado apenas para verificação e para oferecer serviços personalizados na sua região. 
+                      Seu endereço é usado apenas para verificação e para oferecer serviços personalizados na sua região.
                       Todas as informações são criptografadas e protegidas.
                     </p>
                   </div>
