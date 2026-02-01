@@ -164,7 +164,7 @@ export default function CadastroInicial() {
                 <span className="brand-gradient">À NOVA REALIDADE</span>
               </h1>
               <p className="text-lg md:text-xl text-gray-600 mb-12 font-light leading-relaxed">
-                Compre hoje pela metade do preço e pague o restante em até 3 meses
+                Compre hoje pela metade do preço e pague o restante em até 3 meses.
               </p>
 
               <div className="flex justify-center w-full">

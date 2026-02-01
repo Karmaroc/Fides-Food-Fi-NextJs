@@ -5,7 +5,12 @@ import { useRouter } from 'next/router';
 export default function CadastroNomeEmpresa() {
   const [scrollY, setScrollY] = useState(0);
   const [nomeEmpresa, setNomeEmpresa] = useState('');
+  const [isClient, setIsClient] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -14,12 +19,14 @@ export default function CadastroNomeEmpresa() {
   }, []);
 
   useEffect(() => {
-    const nome = localStorage.getItem('cadastroNome');
-    const sobrenome = localStorage.getItem('cadastroSobrenome');
-    const tipoPessoa = localStorage.getItem('cadastroTipoPessoa');
-    const razaoSocial = localStorage.getItem('cadastroRazaoSocial');
-    if (!nome || !sobrenome || !tipoPessoa || !razaoSocial || tipoPessoa !== 'pj') {
-      router.push('/cadastro-tipo-pessoa');
+    if (typeof window !== 'undefined') {
+      const nome = localStorage.getItem('cadastroNome');
+      const sobrenome = localStorage.getItem('cadastroSobrenome');
+      const tipoPessoa = localStorage.getItem('cadastroTipoPessoa');
+      const razaoSocial = localStorage.getItem('cadastroRazaoSocial');
+      if (!nome || !sobrenome || !tipoPessoa || !razaoSocial || tipoPessoa !== 'pj') {
+        router.push('/cadastro-tipo-pessoa');
+      }
     }
   }, [router]);
 
@@ -28,7 +35,9 @@ export default function CadastroNomeEmpresa() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (nomeEmpresa.trim()) {
-      localStorage.setItem('cadastroNomeEmpresa', nomeEmpresa);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('cadastroNomeEmpresa', nomeEmpresa);
+      }
       router.push('/cadastro-endereco');
     }
   };
@@ -231,7 +240,7 @@ export default function CadastroNomeEmpresa() {
                     <div className="bg-white/50 rounded-lg p-3 mt-3 border border-blue-100">
                       <p className="text-blue-600 font-semibold text-sm mb-1">Exemplo:</p>
                       <p className="text-blue-800 text-sm">
-                        <span className="font-semibold text-blue-900">Razão Social:</span> {localStorage.getItem('cadastroRazaoSocial') || 'Empresa Ltda.'}<br />
+<span className="font-semibold text-blue-900">Razão Social:</span> {isClient ? localStorage.getItem('cadastroRazaoSocial') || 'Empresa Ltda.' : 'Empresa Ltda.'}<br />
                         <span className="font-semibold text-blue-900">Nome Fantasia:</span> {nomeEmpresa || 'Nome Popular'}
                       </p>
                     </div>
