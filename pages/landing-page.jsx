@@ -42,7 +42,7 @@ export default function LandingPage() {
         }
 
         .brand-gradient {
-          background: linear-gradient(to right, #3b82f6, #f97316);
+          background: linear-gradient(to right, #3b82f6, #10b981, #f97316);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
@@ -208,7 +208,7 @@ export default function LandingPage() {
               <span className="text-gray-900">AMPLIADO PELA FÉ MÚTUA</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-700 mb-12 max-w-3xl mx-auto font-light leading-relaxed">
-              Compre hoje pela metade do preço e pague o restante em até 3 meses. Aumente seu poder de compra <span className="text-blue-600 font-bold">2x</span> e impulsione seu negócio com condições exclusivas.
+              Compre hoje pela metade do preço e pague o restante em até 3 meses Aumente seu poder de compra <span className="text-blue-600 font-bold">2x</span> e impulsione seu negócio com condições exclusivas
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <button

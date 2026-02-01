@@ -51,7 +51,7 @@ export default function CadastroCNPJ() {
     };
 
     return (
-        <div className="bg-slate-950 text-white font-sans overflow-x-hidden min-h-screen">
+        <div className="bg-white text-gray-900 font-sans overflow-x-hidden min-h-screen">
             <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Poiret+One&family=Monoton&display=swap');
         
@@ -124,26 +124,22 @@ export default function CadastroCNPJ() {
           animation: fade-in-up 0.6s ease-out forwards;
         }
         
-        .bg-grid {
-          background-image: 
-            linear-gradient(rgba(14, 165, 233, 0.1) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(14, 165, 233, 0.1) 1px, transparent 1px);
-          background-size: 50px 50px;
+        .brand-gradient {
+          background: linear-gradient(to right, #3b82f6, #10b981, #f97316);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          transition: all 0.2s ease-in-out;
         }
-        
+
         .hero-gradient {
-          background: radial-gradient(ellipse at top, rgba(14, 165, 233, 0.15) 0%, transparent 60%),
-                      radial-gradient(ellipse at bottom right, rgba(16, 185, 129, 0.15) 0%, transparent 60%);
+          background: radial-gradient(ellipse at top, rgba(14, 165, 233, 0.1) 0%, transparent 60%),
+                      radial-gradient(ellipse at bottom right, rgba(249, 115, 22, 0.1) 0%, transparent 60%);
         }
       `}</style>
 
             {/* Navigation */}
-            <nav className="fixed top-0 w-full z-50 transition-all duration-300"
-                style={{
-                    backgroundColor: scrollY > 50 ? 'rgba(2, 6, 23, 0.95)' : 'transparent',
-                    backdropFilter: scrollY > 50 ? 'blur(10px)' : 'none',
-                    borderBottom: scrollY > 50 ? '1px solid rgba(14, 165, 233, 0.2)' : 'none'
-                }}>
+            <nav className="fixed top-0 w-full z-50 transition-all duration-300 bg-slate-900 backdrop-blur-md border-b border-blue-800/50">
                 <div className="max-w-7xl mx-auto px-6 py-4">
                     <div className="flex justify-between items-center">
                         <button
@@ -155,9 +151,9 @@ export default function CadastroCNPJ() {
                         </button>
 
                         <div className="flex items-center space-x-2">
-                            <div className="flex items-center">
+                            <div className="flex items-center cursor-pointer" onClick={() => router.push('/')}>
                                 <span className="text-3xl font-normal text-white" style={{ fontFamily: 'Poiret One, cursive', letterSpacing: '2px' }}>Fides</span>
-                                <span className="text-3xl font-normal gradient-text" style={{ fontFamily: 'Monoton, cursive', letterSpacing: '1px' }}>Food</span>
+                                <span className="text-3xl font-normal brand-gradient" style={{ fontFamily: 'Monoton, cursive', letterSpacing: '1px' }}>Food</span>
                                 <span className="text-3xl font-normal text-white" style={{ fontFamily: 'Poiret One, cursive', letterSpacing: '2px' }}>Fi</span>
                             </div>
                         </div>
@@ -170,17 +166,17 @@ export default function CadastroCNPJ() {
             {/* Progress Bar */}
             <div className="fixed left-6 top-1/2 transform -translate-y-1/2 z-40">
                 <div className="flex flex-col items-center gap-4">
-                    <div className="bg-slate-800/50 backdrop-blur-sm border border-cyan-500/20 rounded-full w-2 h-48 relative">
-                        <div className="bg-gradient-to-b from-cyan-500 to-emerald-500 w-2 rounded-full absolute top-0 left-0" style={{ height: '40%' }}></div>
+                    <div className="bg-gray-100 backdrop-blur-sm border border-gray-200 rounded-full w-2 h-48 relative">
+                        <div className="bg-gradient-to-b from-orange-500 to-orange-600 w-2 rounded-full absolute top-0 left-0" style={{ height: '40%' }}></div>
                     </div>
                     <div className="text-center">
-                        <div className="text-xs text-gray-400 font-medium">Passo 3 de 7</div>
+                        <div className="text-xs text-gray-500 font-medium font-orbitron">Passo 3 de 7</div>
                     </div>
                 </div>
             </div>
 
             {/* Main Content */}
-            <section className="relative min-h-screen flex items-center justify-center bg-grid hero-gradient overflow-hidden pt-32">
+            <section className="relative min-h-screen flex items-center justify-center bg-white hero-gradient overflow-hidden pt-32">
                 <div
                     className="absolute inset-0 opacity-30"
                     style={{ transform: `translateY(${parallaxOffset}px)` }}
@@ -192,13 +188,13 @@ export default function CadastroCNPJ() {
                 <div className="relative max-w-2xl mx-auto px-6 py-20 w-full">
                     <div className="animate-fade-in-up">
                         <div className="text-center mb-12">
-                            <div className="w-24 h-24 bg-gradient-to-br from-cyan-500 to-emerald-500 rounded-3xl flex items-center justify-center mb-6 glow-effect mx-auto animate-float">
+                            <div className="w-24 h-24 bg-gradient-to-br from-orange-500 to-orange-600 rounded-3xl flex items-center justify-center mb-6 shadow-lg shadow-orange-500/20 mx-auto animate-float">
                                 <Building className="w-12 h-12 text-white" />
                             </div>
                             <h1 className="text-4xl md:text-5xl font-orbitron font-black mb-4">
-                                <span className="gradient-text">CNPJ</span>
+                                <span className="brand-gradient">CNPJ</span>
                             </h1>
-                            <p className="text-xl text-gray-300 font-light">
+                            <p className="text-xl text-gray-600 font-light">
                                 Informe o CNPJ da sua empresa para prosseguirmos
                             </p>
                         </div>
@@ -206,7 +202,7 @@ export default function CadastroCNPJ() {
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div className="space-y-4">
                                 <div>
-                                    <label htmlFor="cnpj" className="block text-lg font-medium text-gray-300 mb-2">
+                                    <label htmlFor="cnpj" className="block text-lg font-medium text-gray-700 mb-2">
                                         CNPJ
                                     </label>
                                     <input
@@ -214,7 +210,7 @@ export default function CadastroCNPJ() {
                                         id="cnpj"
                                         value={cnpj}
                                         onChange={(e) => setCnpj(formatCNPJ(e.target.value))}
-                                        className="w-full px-6 py-4 bg-slate-800/50 backdrop-blur-sm border border-cyan-500/20 rounded-2xl text-white text-lg input-focus outline-none"
+                                        className="w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-2xl text-gray-900 text-lg focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none transition-all shadow-sm"
                                         placeholder="00.000.000/0000-00"
                                         maxLength={18}
                                         required
@@ -222,28 +218,28 @@ export default function CadastroCNPJ() {
                                 </div>
 
                                 {validateCNPJ(cnpj) && (
-                                    <div className="bg-slate-800/30 backdrop-blur-sm border border-cyan-500/20 rounded-xl p-4">
+                                    <div className="bg-emerald-50 border border-emerald-100 rounded-xl p-4">
                                         <div className="flex items-center gap-3">
-                                            <div className="w-8 h-8 bg-emerald-500/20 rounded-full flex items-center justify-center">
-                                                <ChevronRight className="w-4 h-4 text-emerald-400 rotate-90" />
+                                            <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center">
+                                                <ChevronRight className="w-4 h-4 text-emerald-600 rotate-90" />
                                             </div>
                                             <div>
-                                                <p className="text-gray-400 text-sm">CNPJ válido</p>
-                                                <p className="text-white font-semibold">{cnpj}</p>
+                                                <p className="text-emerald-700 text-sm">CNPJ válido</p>
+                                                <p className="text-emerald-900 font-semibold">{cnpj}</p>
                                             </div>
                                         </div>
                                     </div>
                                 )}
                             </div>
 
-                            <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-xl p-4">
+                            <div className="bg-blue-50 border border-blue-100 rounded-xl p-4">
                                 <div className="flex items-start gap-3">
-                                    <div className="w-6 h-6 bg-cyan-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                                         <span className="text-white text-xs font-bold">i</span>
                                     </div>
                                     <div>
-                                        <h4 className="text-white font-semibold mb-1">Por que precisamos do CNPJ?</h4>
-                                        <p className="text-gray-300 text-sm leading-relaxed">
+                                        <h4 className="text-blue-900 font-semibold mb-1">Por que precisamos do CNPJ?</h4>
+                                        <p className="text-blue-700 text-sm leading-relaxed">
                                             O CNPJ é necessário para validar a existência da sua empresa e garantir a segurança das transações comerciais dentro da plataforma.
                                         </p>
                                     </div>
@@ -254,7 +250,7 @@ export default function CadastroCNPJ() {
                                 <button
                                     type="submit"
                                     disabled={!validateCNPJ(cnpj)}
-                                    className="w-full px-8 py-4 bg-gradient-to-r from-cyan-500 to-emerald-500 rounded-2xl text-xl font-bold hover:shadow-2xl hover:shadow-emerald-500/50 transition-all transform hover:scale-[1.02] glow-effect disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3"
+                                    className="w-full px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-2xl text-xl font-bold hover:shadow-2xl hover:shadow-orange-500/50 transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3 shadow-lg"
                                 >
                                     <span>Continuar</span>
                                     <ChevronRight size={24} />

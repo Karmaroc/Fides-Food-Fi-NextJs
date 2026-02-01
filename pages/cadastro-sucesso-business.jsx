@@ -1,179 +1,313 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, CheckCircle, ArrowRight, Building, ShieldCheck } from 'lucide-react';
+import { Send, MessageCircle, CheckCircle, AlertCircle, ArrowRight, Building, ShieldCheck } from 'lucide-react';
 import { useRouter } from 'next/router';
 
 export default function CadastroSucessoBusiness() {
-    const [scrollY, setScrollY] = useState(0);
     const [dados, setDados] = useState(null);
+    const [codigoEnviado, setCodigoEnviado] = useState(false);
+    const [codigoConfirmado, setCodigoConfirmado] = useState(false);
+    const [codigoUsuario, setCodigoUsuario] = useState('');
+    const [codigoGerado, setCodigoGerado] = useState('');
+    const [enviando, setEnviando] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
-        const handleScroll = () => setScrollY(window.scrollY);
-        window.addEventListener('scroll', handleScroll);
-
         const dadosSalvos = localStorage.getItem('cadastroCompleto');
         if (dadosSalvos) {
             setDados(JSON.parse(dadosSalvos));
         } else {
             router.push('/cadastro-inicial');
         }
-
-        return () => window.removeEventListener('scroll', handleScroll);
     }, [router]);
 
+    const enviarCodigoTelegram = async () => {
+        setEnviando(true);
+        const codigo = Math.floor(100000 + Math.random() * 900000).toString();
+        setCodigoGerado(codigo);
+        
+        try {
+            const response = await fetch('http://localhost:8085/telegram/webhook', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    action: 'send_code',
+                    phone: dados?.telefone,
+                    code: codigo,
+                    name: dados?.razaoSocial || dados?.nomeEmpresa
+                })
+            });
+            
+            if (response.ok) {
+                setCodigoEnviado(true);
+            } else {
+                alert('Erro ao enviar código. Tente novamente.');
+            }
+        } catch (error) {
+            console.error('Erro:', error);
+            alert('Erro ao enviar código. Verifique sua conexão.');
+        } finally {
+            setEnviando(false);
+        }
+    };
+
+    const confirmarCodigo = () => {
+        if (codigoUsuario === codigoGerado) {
+            setCodigoConfirmado(true);
+            alert('✅ Empresa verificada com sucesso!');
+        } else {
+            alert('❌ Código incorreto. Tente novamente.');
+        }
+    };
+
     return (
-        <div className="bg-slate-950 text-white font-sans overflow-x-hidden min-h-screen flex flex-col">
+        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
             <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Poiret+One&family=Monoton&display=swap');
-        
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
-        
-        body {
-          font-family: 'Rajdhani', sans-serif;
-          background-color: #020617;
-        }
-        
-        .font-orbitron {
-          font-family: 'Orbitron', sans-serif;
-        }
-        
-        .gradient-text {
-          background: linear-gradient(to right, #10b981, #3b82f6, #10b981);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
-        
-        .glow-effect {
-          box-shadow: 0 0 30px rgba(16, 185, 129, 0.2),
-                      0 0 60px rgba(14, 165, 233, 0.1);
-        }
-        
-        @keyframes fade-in-up {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .animate-fade-in-up {
-          animation: fade-in-up 0.8s ease-out forwards;
-        }
+                @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Poiret+One&family=Monoton&display=swap');
+                
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                }
+                
+                body {
+                    font-family: 'Rajdhani', sans-serif;
+                }
+                
+                .font-orbitron {
+                    font-family: 'Orbitron', sans-serif;
+                }
+                
+                @keyframes float {
+                    0%, 100% { transform: translateY(0px); }
+                    50% { transform: translateY(-20px); }
+                }
+                
+                @keyframes pulse-glow {
+                    0%, 100% { opacity: 1; }
+                    50% { opacity: 0.5; }
+                }
+                
+                .animate-float {
+                    animation: float 6s ease-in-out infinite;
+                }
+                
+                .animate-pulse-glow {
+                    animation: pulse-glow 2s ease-in-out infinite;
+                }
+                
+                @keyframes slide-in-left-light {
+                    from {
+                        opacity: 0;
+                        transform: translateX(-30px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
+                }
+                
+                .animate-slide-in-left-light {
+                    animation: slide-in-left-light 1.2s ease-out forwards;
+                }
+                
+                .brand-gradient {
+                    background: linear-gradient(to right, #3b82f6, #10b981, #f97316);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    transition: all 0.2s ease-in-out;
+                    display: inline-flex;
+                    align-items: center;
+                }
 
-        .bg-grid {
-          background-image: 
-            linear-gradient(rgba(14, 165, 233, 0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(14, 165, 233, 0.05) 1px, transparent 1px);
-          background-size: 40px 40px;
-        }
-      `}</style>
+                .brand-gradient:hover {
+                    filter: brightness(${codigoConfirmado ? 1.1 : 0.9});
+                    transform: translateY(-1px);
+                }
+                
+                .text-3xl {
+                    font-size: 1.25rem;
+                    line-height: 1.75rem;
+                }
+                
+                .font-normal {
+                    font-weight: 400;
+                }
+                
+                .text-white {
+                    color: white;
+                }
+                
+                .brand-gradient {
+                    background: linear-gradient(to right, #3b82f6, #10b981, #f97316);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                }
+                
+                @media (min-width: 768px) {
+                    .text-3xl {
+                        font-size: 2rem;
+                        line-height: 1;
+                    }
+                }
+                
+                @media (min-width: 1024px) {
+                    .text-3xl {
+                        font-size: 3rem;
+                    }
+                }
+            `}</style>
 
-            {/* Top Section - Image & Welcome */}
-            <section className="relative h-[45vh] w-full overflow-hidden flex items-center justify-center">
-                <div className="absolute inset-0">
-                    <img
-                        src="/folhas_verde_azul.jpg"
-                        alt="Fundo Folhas Verde Azul"
-                        className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-b from-slate-950/40 via-transparent to-slate-950"></div>
+            {/* Header */}
+            <header className="relative py-8 text-center">
+                <div className="flex items-center justify-center animate-slide-in-left-light cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                    <span className="text-3xl font-normal text-white" style={{ fontFamily: 'Poiret One, cursive', letterSpacing: '2px' }}>Fides</span>
+                <span className="text-3xl font-normal brand-gradient" style={{ fontFamily: 'Monoton, cursive', letterSpacing: '1px' }}>Food</span>
+                <span className="text-3xl font-normal text-white" style={{ fontFamily: 'Poiret One, cursive', letterSpacing: '2px' }}>Fi</span>
                 </div>
+                <p className="mt-4 text-gray-400 text-lg uppercase tracking-[0.3em]">Business</p>
+            </header>
 
-                <div className="relative z-10 text-center animate-fade-in-up">
-                    <h2 className="text-2xl md:text-3xl font-orbitron font-medium text-white/80 uppercase tracking-[0.4em] mb-4">
-                        Bem-vindos
-                    </h2>
-                    <div className="flex items-center justify-center">
-                        <span className="text-5xl md:text-7xl lg:text-8xl font-normal text-white" style={{ fontFamily: 'Poiret One, cursive', letterSpacing: '4px' }}>Fides</span>
-                        <span className="text-5xl md:text-7xl lg:text-8xl font-normal gradient-text" style={{ fontFamily: 'Monoton, cursive', letterSpacing: '2px' }}>Food</span>
-                        <span className="text-5xl md:text-7xl lg:text-8xl font-normal text-white" style={{ fontFamily: 'Poiret One, cursive', letterSpacing: '4px' }}>Fi</span>
-                    </div>
-                </div>
-            </section>
-
-            {/* Bottom Section - Status & Email Info */}
-            <section className="flex-1 bg-grid relative flex flex-col items-center px-6 py-12 lg:py-16">
-                <div className="max-w-3xl w-full animate-fade-in-up space-y-10">
-
-                    {/* Status Banner */}
-                    <div className="text-center">
-                        <div className="inline-flex items-center gap-3 px-6 py-2 bg-emerald-500/10 border border-emerald-500/30 rounded-full mb-6">
-                            <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-                            <span className="text-emerald-400 font-bold tracking-[0.2em] uppercase text-sm">Empresa Verificada</span>
+            {/* Main Content */}
+            <main className="flex-1 flex items-center justify-center px-6 py-12">
+                <div className="max-w-2xl w-full">
+                    
+                    {/* Status Card */}
+                    <div className="bg-gray-800/50 backdrop-blur-lg border border-gray-700 rounded-3xl p-8 mb-8 text-center">
+                        <div className="mb-6">
+                            {codigoConfirmado ? (
+                                <div className="inline-flex items-center gap-3 px-6 py-3 bg-green-500/20 border border-green-500/50 rounded-full">
+                                    <CheckCircle className="w-6 h-6 text-green-400" />
+                                    <span className="text-green-400 font-bold tracking-wider uppercase">VERIFICADO</span>
+                                </div>
+                            ) : (
+                                <div className="inline-flex items-center gap-3 px-6 py-3 bg-orange-500/20 border border-orange-500/50 rounded-full animate-pulse">
+                                    <AlertCircle className="w-6 h-6 text-orange-400" />
+                                    <span className="text-orange-400 font-bold tracking-wider uppercase">NÃO VERIFICADO</span>
+                                </div>
+                            )}
                         </div>
-                        <h1 className="text-4xl md:text-6xl font-orbitron font-black leading-tight">
-                            STATUS BUSINESS: <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">ATIVO</span>
+                        
+                        <h1 className="text-3xl md:text-4xl font-orbitron font-bold text-white mb-4">
+                            Status da Empresa
                         </h1>
+                        
+                        <p className="text-xl text-gray-300">
+                            {codigoConfirmado ? 'Sua empresa está verificada e pronta para usar!' : 'Verifique sua empresa via Telegram para ativar todas as funcionalidades'}
+                        </p>
                     </div>
 
-                    {/* Email Attention Card */}
-                    <div className="bg-slate-900/50 backdrop-blur-md border border-white/10 rounded-[2.5rem] p-8 lg:p-12 glow-effect relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 w-48 h-48 bg-cyan-500/5 rounded-full blur-3xl -mr-24 -mt-24"></div>
-
-                        <div className="flex flex-col md:flex-row items-center gap-8">
-                            <div className="w-24 h-24 bg-gradient-to-br from-cyan-500 to-emerald-500 rounded-3xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-cyan-500/20">
-                                <Mail className="w-10 h-10 text-white animate-bounce" />
-                            </div>
-
-                            <div className="flex-1 text-center md:text-left">
-                                <h3 className="text-2xl md:text-3xl font-orbitron font-bold text-white mb-4">
-                                    CONFIRME SEU E-MAIL
-                                </h3>
-                                <p className="text-gray-300 text-lg leading-relaxed mb-6">
-                                    Para ativar todas as funcionalidades do seu perfil business, enviamos um link de confirmação para:
-                                    <br />
-                                    <span className="text-cyan-400 font-bold text-xl block mt-2">{dados?.email}</span>
-                                </p>
-                                <p className="text-gray-400 text-sm">
-                                    Caso não encontre, verifique sua caixa de spam ou lixo eletrônico.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Account Summary */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="bg-slate-800/20 border border-white/5 rounded-3xl p-6 flex items-center gap-4">
-                            <div className="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center uppercase">
-                                <Building className="text-emerald-400" />
-                            </div>
+                    {/* Company Info */}
+                    <div className="bg-gray-800/30 backdrop-blur-lg border border-gray-700 rounded-2xl p-6 mb-8">
+                        <div className="flex items-center gap-4 mb-4">
+                            <Building className="w-8 h-8 text-blue-400" />
                             <div>
-                                <p className="text-gray-500 text-xs font-bold uppercase tracking-wider">Empresa</p>
-                                <p className="text-white font-semibold truncate max-w-[200px]">{dados?.razaoSocial || dados?.nomeEmpresa}</p>
+                                <p className="text-gray-400 text-sm">Empresa</p>
+                                <p className="text-white font-semibold text-lg">{dados?.razaoSocial || dados?.nomeEmpresa}</p>
                             </div>
                         </div>
-
-                        <div className="bg-slate-800/20 border border-white/5 rounded-3xl p-6 flex items-center gap-4">
-                            <div className="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center">
-                                <ShieldCheck className="text-cyan-400" />
-                            </div>
+                        
+                        <div className="flex items-center gap-4">
+                            <ShieldCheck className={`w-8 h-8 ${codigoConfirmado ? 'text-green-400' : 'text-orange-400'}`} />
                             <div>
-                                <p className="text-gray-500 text-xs font-bold uppercase tracking-wider">Acesso</p>
-                                <p className="text-white font-semibold uppercase tracking-widest text-emerald-400">Totalmente Liberado</p>
+                                <p className="text-gray-400 text-sm">Acesso</p>
+                                <p className={`font-semibold text-lg ${codigoConfirmado ? 'text-green-400' : 'text-orange-400'}`}>
+                                    {codigoConfirmado ? 'Totalmente Liberado' : 'Acesso Restrito'}
+                                </p>
                             </div>
                         </div>
                     </div>
 
-                    <div className="text-center pt-8">
+                    {/* Telegram Verification */}
+                    {!codigoConfirmado && (
+                        <div className="bg-gradient-to-r from-blue-600/20 to-blue-800/20 backdrop-blur-lg border border-blue-500/30 rounded-3xl p-8">
+                            <div className="text-center mb-6">
+                                <MessageCircle className="w-12 h-12 text-blue-400 mx-auto mb-4" />
+                                <h2 className="text-2xl font-orbitron font-bold text-white mb-2">
+                                    Verificação por Telegram
+                                </h2>
+                                <p className="text-gray-300">
+                                    Envie um código de verificação para confirmar sua empresa
+                                </p>
+                            </div>
+                            
+                            {!codigoEnviado ? (
+                                <button
+                                    onClick={enviarCodigoTelegram}
+                                    disabled={enviando}
+                                    className="w-full py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-2xl font-bold text-lg hover:from-blue-600 hover:to-blue-700 transition-all transform hover:scale-[1.02] flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    {enviando ? (
+                                        <>
+                                            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                            Enviando...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Send className="w-5 h-5" />
+                                            Enviar Código por Telegram
+                                        </>
+                                    )}
+                                </button>
+                            ) : (
+                                <div className="space-y-4">
+                                    <p className="text-center text-gray-300">
+                                        Digite o código de 6 dígitos recebido:
+                                    </p>
+                                    <div className="flex gap-3">
+                                        <input
+                                            type="text"
+                                            maxLength="6"
+                                            value={codigoUsuario}
+                                            onChange={(e) => setCodigoUsuario(e.target.value.replace(/\D/g, ''))}
+                                            className="flex-1 px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-center text-xl font-bold text-white focus:border-blue-500 focus:outline-none"
+                                            placeholder="000000"
+                                        />
+                                        <button
+                                            onClick={confirmarCodigo}
+                                            className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl font-bold hover:from-green-600 hover:to-green-700 transition-all"
+                                        >
+                                            Confirmar
+                                        </button>
+                                    </div>
+                                    <button
+                                        onClick={enviarCodigoTelegram}
+                                        className="w-full text-blue-400 hover:text-blue-300 text-sm underline"
+                                    >
+                                        Reenviar código
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Dashboard Button */}
+                    <div className="text-center mt-8">
                         <button
-                            onClick={() => router.push('/cadastro-inicial')}
-                            className="px-12 py-5 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-2xl text-xl font-bold hover:shadow-2xl hover:shadow-emerald-500/50 transition-all transform hover:scale-[1.05] inline-flex items-center gap-3"
+                            onClick={() => codigoConfirmado && router.push('/dashboard')}
+                            disabled={!codigoConfirmado}
+                            className={`px-12 py-4 rounded-2xl text-xl font-bold inline-flex items-center gap-3 transition-all ${
+                                codigoConfirmado 
+                                    ? 'bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 transform hover:scale-[1.05]' 
+                                    : 'bg-gray-700 text-gray-400 cursor-not-allowed'
+                            }`}
                         >
-                            <span>Ir para o Dashboard</span>
-                            <ArrowRight size={24} />
+                            <span>{codigoConfirmado ? 'Ir para o Dashboard' : 'Aguarde Verificação'}</span>
+                            {codigoConfirmado && <ArrowRight size={24} />}
                         </button>
                     </div>
                 </div>
-            </section>
+            </main>
 
-            {/* Footer Branding */}
-            <footer className="py-8 bg-slate-950 border-t border-white/5 text-center">
-                <p className="text-gray-500 text-sm tracking-widest uppercase">
-                    © 2026 FidesFoodFi Business Solutions
-                </p>
-            </footer>
+            {/* Background Effects */}
+            <div className="fixed inset-0 overflow-hidden pointer-events-none">
+                <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-pulse-glow"></div>
+                <div className="absolute bottom-20 right-10 w-96 h-96 bg-green-500/10 rounded-full blur-3xl animate-pulse-glow"></div>
+            </div>
         </div>
     );
 }
